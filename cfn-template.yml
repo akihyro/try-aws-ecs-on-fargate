@@ -34,6 +34,38 @@ Resources:
       Tags:
         - Key: Name
           Value: try-aws-ecs-on-fargate-nginx
+  NginxService:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: try-aws-ecs-on-fargate-nginx
+      Cluster: !Ref Cluster
+      TaskDefinition: !Ref NginxTaskDefinition
+      LaunchType: FARGATE
+      DesiredCount: 2
+      LoadBalancers:
+        - ContainerName: try-aws-ecs-on-fargate-nginx
+          ContainerPort: 80
+          TargetGroupArn: !Ref LoadBalancerTargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets: !Ref SubnetIds
+          SecurityGroups:
+            - !Sub ${NginxServiceSecurityGroup.GroupId}
+      Tags:
+        - Key: Name
+          Value: try-aws-ecs-on-fargate-nginx
+  NginxServiceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: try-aws-ecs-on-fargate-nginx-service
+      GroupDescription: try-aws-ecs-on-fargate-nginx-service
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !Sub ${LoadBalancerSecurityGroup.GroupId}
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
