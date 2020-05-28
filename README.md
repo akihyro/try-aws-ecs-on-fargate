@@ -12,6 +12,7 @@ aws cloudformation deploy \
     --region ap-northeast-1 \
     --template-file cfn-template.yml \
     --stack-name try-aws-ecs-on-fargate \
+    --parameter-overrides VpcId=vpc-XXXXXXXX SubnetIds=subnet-XXXXXXXXXXXXXXXXX,subnet-XXXXXXXXXXXXXXXXX \
     --tags Name=try-aws-ecs-on-fargate \
     --no-fail-on-empty-changeset
 ```

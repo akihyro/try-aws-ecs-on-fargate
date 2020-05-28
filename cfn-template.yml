@@ -1,5 +1,10 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: try-aws-ecs-on-fargate
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
 Resources:
   Cluster:
     Type: AWS::ECS::Cluster
@@ -29,3 +34,25 @@ Resources:
       Tags:
         - Key: Name
           Value: try-aws-ecs-on-fargate-nginx
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: try-aws-ecs-on-fargate
+      Scheme: internet-facing
+      Subnets: !Ref SubnetIds
+      SecurityGroups:
+        - !Sub ${LoadBalancerSecurityGroup.GroupId}
+      Tags:
+        - Key: Name
+          Value: try-aws-ecs-on-fargate
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: try-aws-ecs-on-fargate-lb
+      GroupDescription: try-aws-ecs-on-fargate-lb
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: "0.0.0.0/0"
