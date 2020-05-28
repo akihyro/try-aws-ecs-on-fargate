@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: try-aws-ecs-on-fargate
+Resources:
+  Cluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: try-aws-ecs-on-fargate
+      ClusterSettings:
+        - Name: containerInsights
+          Value: enabled
+      Tags:
+        - Key: Name
+          Value: try-aws-ecs-on-fargate
