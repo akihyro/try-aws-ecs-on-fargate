@@ -11,3 +11,21 @@ Resources:
       Tags:
         - Key: Name
           Value: try-aws-ecs-on-fargate
+  NginxTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: try-aws-ecs-on-fargate
+      Cpu: 256
+      Memory: 512
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      ContainerDefinitions:
+        - Name: try-aws-ecs-on-fargate-nginx
+          Image: nginx:1.17
+          PortMappings:
+            - Protocol: tcp
+              ContainerPort: 80
+      Tags:
+        - Key: Name
+          Value: try-aws-ecs-on-fargate-nginx
