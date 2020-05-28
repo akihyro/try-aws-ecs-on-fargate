@@ -36,6 +36,7 @@ Resources:
           Value: try-aws-ecs-on-fargate-nginx
   NginxService:
     Type: AWS::ECS::Service
+    DependsOn: LoadBalancerListener
     Properties:
       ServiceName: try-aws-ecs-on-fargate-nginx
       Cluster: !Ref Cluster
