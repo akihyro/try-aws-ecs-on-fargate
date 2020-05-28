@@ -15,3 +15,16 @@ aws cloudformation deploy \
     --tags Name=try-aws-ecs-on-fargate \
     --no-fail-on-empty-changeset
 ```
+
+## アンデプロイ
+
+後始末。  
+
+```sh
+aws cloudformation delete-stack \
+    --region ap-northeast-1 \
+    --stack-name try-aws-ecs-on-fargate
+aws cloudformation wait stack-delete-complete \
+    --region ap-northeast-1 \
+    --stack-name try-aws-ecs-on-fargate
+```
